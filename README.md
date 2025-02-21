@@ -3,3 +3,7 @@
 ### Aaron
 - DisasterVictim
 - FamilyRelation
+### Noor
+- Supply
+- Location
+- Inquirer
