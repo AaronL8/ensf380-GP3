@@ -7,3 +7,7 @@
 - Supply
 - Location
 - Inquirer
+
+### Manmohit
+- ReliefService
+- MedicalRecord
