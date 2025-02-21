@@ -14,7 +14,7 @@ public class MedicalRecord {
     public MedicalRecord(Location location, String treatmentDetails, String dateOfTreatment) {
         this.location = location;
         this.treatmentDetails = treatmentDetails;
-        this.setDateOfTreatment(dateOfTreatment); // Use setter to validate date format
+        this.setDateOfTreatment(dateOfTreatment);
     }
 
     // Getters
@@ -46,7 +46,7 @@ public class MedicalRecord {
         this.dateOfTreatment = dateOfTreatment;
     }
 
-    // Helper method to validate date format
+    // Validate date format
     private boolean isValidDate(String date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setLenient(false); // Disallow lenient parsing
