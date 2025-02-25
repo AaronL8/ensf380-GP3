@@ -83,8 +83,8 @@ public class ReliefService {
     public String getLogDetails() {
         return String.format(
             "Inquirer: %s, Missing Person: %s, Date of Inquiry: %s, Info Provided: %s, Last Known Location: %s",
-            inquirer.getFirstName() + " " + inquirer.getLastName(),
-            missingPerson.getFirstName() + " " + missingPerson.getLastName(),
+            inquirer.getFirstName(),
+            missingPerson.getFirstName(),
             dateOfInquiry,
             infoProvided,
             lastKnownLocation.getName()

@@ -16,17 +16,21 @@ public class DisasterVictim {
     private static int counter;
 
     // Constructors
-    public DisasterVictim(String firstName, String ENTRY_DATE) {
+    public DisasterVictim(String firstName, String ENTRY_DATE) throws IllegalArgumentException {
+        if(!isValidDateFormat(ENTRY_DATE)) {
+            throw new IllegalArgumentException();
+        }
         this.firstName = firstName;
         this.ENTRY_DATE = ENTRY_DATE;
         this.ASSIGNED_SOCIAL_ID = generateSocialID();
     }
-    public DisasterVictim(String firstName, String ENTRY_DATE, String dateOfBirth) 
-        throws IllegalArgumentException
-    {
+    public DisasterVictim(String firstName, String ENTRY_DATE, String dateOfBirth) throws IllegalArgumentException {
+        this.setDateOfBirth(dateOfBirth);
+        if(!isValidDateFormat(ENTRY_DATE) || convertDateStringToInt(ENTRY_DATE) < convertDateStringToInt(dateOfBirth)) {
+            throw new IllegalArgumentException();
+        }
         this.firstName = firstName;
         this.ENTRY_DATE = ENTRY_DATE;
-        this.setDateOfBirth(dateOfBirth); 
         this.ASSIGNED_SOCIAL_ID = generateSocialID();
     }
 
@@ -74,7 +78,7 @@ public class DisasterVictim {
             this.dateOfBirth = dateOfBirth;
         }
         else {
-            throw new IllegalArgumentException("Invalid Date Format. Expected Format: YYYY-MM-DD");
+            throw new IllegalArgumentException();
         }
     }
     public void setFamilyConnections(FamilyRelation[] connections) {
@@ -95,31 +99,52 @@ public class DisasterVictim {
 
     // Add Methods
     public void addPersonalBelonging(Supply supply) {
-        int arr_length = this.personalBelongings.length;
-        Supply[] arr = new Supply[arr_length + 1];
-        for(int i = 0; i < arr_length; i++) {
-            arr[i] = this.personalBelongings[i];
+        if(personalBelongings == null) {
+            Supply[] arr = new Supply[1];
+            arr[0] = supply;
+            this.personalBelongings = arr;
         }
-        arr[arr_length] = supply;
-        return arr;
+        else {
+            int arr_length = this.personalBelongings.length;
+            Supply[] arr = new Supply[arr_length + 1];
+            for(int i = 0; i < arr_length; i++) {
+                arr[i] = this.personalBelongings[i];
+            }
+            arr[arr_length] = supply;
+            this.personalBelongings = arr;
+        }
     }
     public void addFamilyConnection(FamilyRelation record) {
-        int arr_length = this.familyConnections.length;
-        FamilyRelation[] arr = new FamilyRelation[arr_length + 1];
-        for(int i = 0; i < arr_length; i++) {
-            arr[i] = this.familyConnections[i];
+        if(familyConnections == null) {
+            FamilyRelation[] arr = new FamilyRelation[1];
+            arr[0] = record;
+            this.familyConnections = arr;
         }
-        arr[arr_length] = record;
-        return arr;
+        else {
+            int arr_length = this.familyConnections.length;
+            FamilyRelation[] arr = new FamilyRelation[arr_length + 1];
+            for(int i = 0; i < arr_length; i++) {
+                arr[i] = this.familyConnections[i];
+            }
+            arr[arr_length] = record;
+            this.familyConnections = arr;
+        }
     }
     public void addMedicalRecord(MedicalRecord record) {
-        int arr_length = this.medicalRecords.length;
-        MedicalRecord[] arr = new MedicalRecord[arr_length + 1];
-        for(int i = 0; i < arr_length; i++) {
-            arr[i] = this.medicalRecords[i];
+        if(medicalRecords == null) {
+            MedicalRecord[] arr = new MedicalRecord[1];
+            arr[0] = record;
+            this.medicalRecords = arr;
         }
-        arr[arr_length] = record;
-        return arr;
+        else {
+            int arr_length = this.medicalRecords.length;
+            MedicalRecord[] arr = new MedicalRecord[arr_length + 1];
+            for(int i = 0; i < arr_length; i++) {
+                arr[i] = this.medicalRecords[i];
+            }
+            arr[arr_length] = record;
+            this.medicalRecords = arr;
+        }
     }
 
     // Remove Methods
@@ -133,7 +158,7 @@ public class DisasterVictim {
             }
             arr[j] = this.personalBelongings[i];
         }
-        return arr;
+        this.personalBelongings = arr;
     }
     public void removeFamilyConnection(FamilyRelation exRelation) {
         int arr_length = this.familyConnections.length;
@@ -145,18 +170,24 @@ public class DisasterVictim {
             }
             arr[j] = this.familyConnections[i];
         }
-        return arr;
+        this.familyConnections = arr;
     }
     
     // Private Methods
     private static int generateSocialID() {
-        counter += 1;
-        return counter;
+        return counter++;
     }
     private static boolean isValidDateFormat(String date) {
         String regex = "^([0-9]{4})-([0-9]{2})-([0-9]{2})$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(date);
         return matcher.matches();
+    }   
+    private static int convertDateStringToInt(String dateStr) {
+        String[] values = dateStr.split("-");
+        int year = Integer.parseInt(values[0]);
+        int month = Integer.parseInt(values[1]);
+        int day = Integer.parseInt(values[2]);
+        return year + month + day;
     }
 }
